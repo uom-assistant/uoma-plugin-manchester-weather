@@ -61,24 +61,26 @@
 
   <section v-if="inited && (isRainning || maxPrecipitation > 0)" class="mt-3 w-full rounded-lg p-4 shadow-lg" :class="`${current.weather ? current.weather.class : 'sunny'}-${currentSpan}-card`">
     <div class="flex-vertical -mb-0.5 pr-1">
-      <h2 class="title-small flex justify-between opacity-100">
-        <div class="flex justify-start items-center opacity-60">
+      <h2 class="title-small flex flex-col opacity-100">
+        <div class="flex justify-start items-center opacity-60 mb-2">
           <div class="flex-center">
             <mdi-umbrella class="text-size-xs mr-1.5 mb-0.3" v-if="isRainning"/>
             <mdi-umbrella-closed-variant class="text-size-xs mr-1.5 mb-0.3" v-else/>
           </div>
           {{ $t('rain') }}
         </div>
-        <span>{{ isRainning ? (Math.min(...remainArray) > 0 ? $t('rain will not end') : $t('rain will end', nextMinute, [nextMinute])) : (maxPrecipitation === 0 ? $t('no rain') : $t('will rain', nextMinute, [nextMinute])) }}</span>
+        <span>{{ isRainning ? (Math.min(...remainArray) > 0 ? $t('rain will not end') : $t('rain will end', [nextMinute], nextMinute)) : (maxPrecipitation === 0 ? $t('no rain') : $t('will rain', [nextMinute], nextMinute)) }}</span>
       </h2>
 
       <div class="w-full h-6 rounded-md mt-2.7 grid grid-cols-5 overflow-hidden relative" :style="{ 'grid-template-columns': `repeat(${remainArray.length}, minmax(0, 1fr))` }">
-        <div class="w-full h-full bg-gray-400 opacity-40" v-for="(item, i) in remainArray" :key="`rain-${i}`"/>
+        <div class="w-full h-full bg-gray-300" :style="{ opacity: `${(item * 100) * 0.8 + 20}%` }" v-for="(item, i) in remainArray" :key="`rain-${i}`">
+          <div :style="{ opacity: `${item * 100}%` }" class="w-full h-full bg-light-blue-600"/>
+        </div>
       </div>
     </div>
   </section>
 
-  <section v-if="inited" class="mt-4 w-full rounded-lg pt-4 pb-3.5 shadow-lg" :class="`${current.weather && inited ? current.weather.class : 'sunny'}-${currentSpan}-card`">
+  <section v-if="inited" class="w-full rounded-lg pt-4 pb-3.5 shadow-lg" :class="`${current.weather && inited ? current.weather.class : 'sunny'}-${currentSpan}-card${inited && (isRainning || maxPrecipitation > 0) ? ' mt-3' : ' mt-4'}`">
     <div class="w-full" @mousedown.left="onMouseDown">
       <div class="w-full horizontal overflow-x-auto overflow-y-hidden pb-8 -mb-8" ref="horizontal" @scroll="onScroll">
         <div class="w-637.5 flex-shrink-0 overflow-hidden">
