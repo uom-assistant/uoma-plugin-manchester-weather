@@ -113,7 +113,7 @@ export default (): loadData => {
     hourly.splice(0)
 
     if (response.hourly) {
-      for (const item of response.hourly) {
+      for (const item of response.hourly.slice(0, 36)) {
         hourly.push({
           dt: item.dt,
           temp: item.temp,

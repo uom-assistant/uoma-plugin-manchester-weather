@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
-import Components from 'vite-plugin-components'
-import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
+import Components from 'unplugin-vue-components/vite'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import WindiCSS from 'vite-plugin-windicss'
 
 export default defineConfig({
@@ -12,8 +13,8 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
-      customComponentResolvers: ViteIconsResolver({
-        componentPrefix: '',
+      resolvers: IconsResolver({
+        prefix: '',
         enabledCollections: ['mdi']
       })
     }),

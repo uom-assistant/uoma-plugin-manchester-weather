@@ -29,9 +29,9 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.13.0",
     "typescript": "^4.3.5",
+    "unplugin-icons": "^0.12.12",
+    "unplugin-vue-components": "^0.15.6",
     "vite": "^2.4.0",
-    "vite-plugin-components": "^0.12.2",
-    "vite-plugin-icons": "^0.6.5",
     "vite-plugin-windicss": "^1.2.4",
     "windicss": "^3.1.4"
   }
