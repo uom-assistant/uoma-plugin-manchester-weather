@@ -325,11 +325,11 @@ import rain from './parts/rain'
 
 import localeTimeFormat from './locales/datetimeFormats'
 
-const { loading, inited, sun, misc, current, hourly, precipitation, alerts, aqi, load } = loadData()
+const { loading, inited, sun, misc, current, hourly, precipitation, alerts, aqi } = loadData()
 const { convertTempTo, convertSpeedTo, convertDistanceTo, currentUnit } = weather()
-const { currentTime, transformDateTime, formatDate, formatTime, formatDateTime, currentTimeInMan, currentSpan, daySpan, rotateDeg, brightness } = time(sun)
-const { chartConfig, twoDayTemp, onScroll, onMouseDown, onMouseUp, onMouseMove, horizontal, getBgColor } = chart(hourly, convertTempTo, currentUnit)
-const { remain, remainArray, isRainning, maxPrecipitation, nextMinute } = rain(precipitation, currentTime)
+const { currentTime, transformDateTime, formatTime, formatDateTime, currentSpan, daySpan, rotateDeg, brightness } = time(sun)
+const { chartConfig, twoDayTemp, onScroll, onMouseDown, horizontal, getBgColor } = chart(hourly, convertTempTo, currentUnit)
+const { remainArray, isRainning, maxPrecipitation, nextMinute } = rain(precipitation, currentTime)
 
 const uomaEnabled = ref(false)
 </script>

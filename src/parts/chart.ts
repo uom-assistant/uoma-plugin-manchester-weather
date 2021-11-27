@@ -77,13 +77,13 @@ export default (hourly: hour[], convertTempTo: (unit: 'c' | 'f', temp: number) =
   const twoDayTemp = computed(() => {
     const result: tempList = {}
 
-    result[`${hourly[0].dt - 1800}`] = convertTempTo(currentUnit.value, hourly[0].temp)
+    result[`${hourly[0].dt - 1800}`] = convertTempTo(currentUnit.value, hourly[0].temp) + 100
 
     for (const item of hourly) {
-      result[`${item.dt}`] = convertTempTo(currentUnit.value, item.temp)
+      result[`${item.dt}`] = convertTempTo(currentUnit.value, item.temp) + 100
     }
 
-    result[`${hourly[hourly.length - 1].dt + 1800}`] = convertTempTo(currentUnit.value, hourly[hourly.length - 1].temp)
+    result[`${hourly[hourly.length - 1].dt + 1800}`] = convertTempTo(currentUnit.value, hourly[hourly.length - 1].temp) + 100
 
     return result
   })
