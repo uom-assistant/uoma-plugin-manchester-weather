@@ -4,7 +4,7 @@ import VueChartkick from 'vue-chartkick'
 import { Chart, LinearScale, CategoryScale, LineElement, LineController, PointElement, Filler } from 'chart.js'
 
 import App from './App.vue'
-import messages from './locales/messages'
+import * as messages from './locales/messages.json'
 
 import 'virtual:windi.css'
 
@@ -13,7 +13,7 @@ const i18n = createI18n({
   globalInjection: true,
   locale: 'en',
   fallbackLocale: 'en',
-  messages
+  messages: (messages as any).default
 })
 
 Chart.register(LinearScale, CategoryScale, LineElement, LineController, PointElement, Filler)

@@ -326,7 +326,7 @@ import rain from './parts/rain'
 
 import localeTimeFormat from './locales/datetimeFormats'
 
-const { locale } = useI18n({ useScope: 'global' })
+const { locale } = useI18n()
 const localeName = ref<'zh' | 'en'>('en')
 
 const { loading, inited, sun, misc, current, hourly, precipitation, alerts, aqi } = loadData()
@@ -342,6 +342,9 @@ onMounted(() => {
   const urlParams = new URLSearchParams(window.location.search)
   localeName.value = localeTimeFormat[(urlParams.get('locale') as ('zh' | 'en')) || 'en'] ? (urlParams.get('locale') as ('zh' | 'en') || 'en') : 'en'
   locale.value = localeName.value
+  if ((urlParams.get('dark') || 'false') === 'true') {
+    document.documentElement.classList.add('dark')
+  }
 
   const parentOrigin = urlParams.get('origin') || ''
 
@@ -354,8 +357,20 @@ onMounted(() => {
       if (action.type === 'locale') {
         localeName.value = localeTimeFormat[action.payload as ('zh' | 'en')] ? action.payload : 'en'
         locale.value = localeName.value
+      } else if (action.type === 'dark') {
+        if (action.payload) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
       }
     }
   }, false)
 })
 </script>
+
+<style>
+html.dark {
+  color-scheme: dark;
+}
+</style>
