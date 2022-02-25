@@ -11,7 +11,7 @@ import 'virtual:windi.css'
 const i18n = createI18n({
   legacy: false,
   globalInjection: true,
-  locale: 'zh',
+  locale: 'en',
   fallbackLocale: 'en',
   messages
 })

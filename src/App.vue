@@ -31,7 +31,7 @@
                 </h1>
                 <div v-for="(alert, index) in alerts" :key="`alert-${index}`" class="mt-3">
                   <h2 class="font-bold">{{ alert.event }}</h2>
-                  <div class="opacity-50 text-size-sm mt-1">{{ formatDateTime(transformDateTime(new Date(alert.start * 1000)), $i18n.locale, localeTimeFormat[$i18n.locale].dateTimeFormat) }} - {{ formatDateTime(transformDateTime(new Date(alert.end * 1000)), $i18n.locale, localeTimeFormat[$i18n.locale].dateTimeFormat) }}</div>
+                  <div class="opacity-50 text-size-sm mt-1">{{ formatDateTime(transformDateTime(new Date(alert.start * 1000)), $i18n.locale, localeTimeFormat[localeName].dateTimeFormat) }} - {{ formatDateTime(transformDateTime(new Date(alert.end * 1000)), $i18n.locale, localeTimeFormat[localeName].dateTimeFormat) }}</div>
                   <p class="whitespace-pre-wrap opacity-80 text-size-sm mt-1">{{ alert.description }}</p>
                   <span class="text-size-xs opacity-60">{{ $t('by', [alert.senderName]) }}</span>
                 </div>
@@ -283,7 +283,7 @@
       </div>
     </section>
 
-    <section v-if="inited" class="mt-3 w-full rounded-lg p-4 shadow-lg" :class="`${current.weather ? current.weather.class : 'sunny'}-${currentSpan}-card`">
+    <!-- <section v-if="inited" class="mt-3 w-full rounded-lg p-4 shadow-lg" :class="`${current.weather ? current.weather.class : 'sunny'}-${currentSpan}-card`">
       <div class="flex justify-between items-center">
         <h2 class="flex-grow cursor-pointer" @click="uomaEnabled = !uomaEnabled">
           {{ $t('uoma') }}
@@ -302,7 +302,7 @@
         </Switch>
       </div>
       <p class="text-size-sm opacity-50 mt-2.5">{{ $t('integration info') }}</p>
-    </section>
+    </section> -->
 
     <footer class="w-full mt-6 mb-2 text-center text-sm opacity-50" v-if="inited">
       {{ $t('updated', [formatTime(new Date(current.dt * 1000))]) }}<br>
@@ -314,9 +314,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
+import { onMounted, ref } from 'vue'
 import { Popover, PopoverButton, PopoverPanel, Switch } from '@headlessui/vue'
+import { useI18n } from 'vue-i18n'
+
 import loadData from './parts/loadData'
 import weather from './parts/weather'
 import time from './parts/time'
@@ -325,11 +326,36 @@ import rain from './parts/rain'
 
 import localeTimeFormat from './locales/datetimeFormats'
 
+const { locale } = useI18n({ useScope: 'global' })
+const localeName = ref<'zh' | 'en'>('en')
+
 const { loading, inited, sun, misc, current, hourly, precipitation, alerts, aqi } = loadData()
 const { convertTempTo, convertSpeedTo, convertDistanceTo, currentUnit } = weather()
 const { currentTime, transformDateTime, formatTime, formatDateTime, currentSpan, daySpan, rotateDeg, brightness } = time(sun)
 const { chartConfig, twoDayTemp, onScroll, onMouseDown, horizontal, getBgColor } = chart(hourly, convertTempTo, currentUnit)
 const { remainArray, isRainning, maxPrecipitation, nextMinute } = rain(precipitation, currentTime)
 
-const uomaEnabled = ref(false)
+// const uomaEnabled = ref(false)
+
+onMounted(() => {
+  // Read initial settings from URl query
+  const urlParams = new URLSearchParams(window.location.search)
+  localeName.value = localeTimeFormat[(urlParams.get('locale') as ('zh' | 'en')) || 'en'] ? (urlParams.get('locale') as ('zh' | 'en') || 'en') : 'en'
+  locale.value = localeName.value
+
+  const parentOrigin = urlParams.get('origin') || ''
+
+  window.addEventListener('message', (event) => {
+    if (event.origin !== parentOrigin) {
+      return
+    }
+    const data = JSON.parse(event.data)
+    for (const action of data) {
+      if (action.type === 'locale') {
+        localeName.value = localeTimeFormat[action.payload as ('zh' | 'en')] ? action.payload : 'en'
+        locale.value = localeName.value
+      }
+    }
+  }, false)
+})
 </script>

@@ -28,16 +28,10 @@ type tempList = {
   [index: string]: number
 }
 
-type ScrollEvent = {
-  target: {
-    scrollLeft: number
-  }
-}
-
 type chart = {
   chartConfig: chartConfig,
   twoDayTemp: ComputedRef<tempList>,
-  onScroll: (e: ScrollEvent) => void,
+  onScroll: (e: UIEvent) => void,
   onMouseDown: (e: MouseEvent) => void,
   onMouseUp: () => void,
   onMouseMove: (e: MouseEvent) => void,
@@ -98,8 +92,8 @@ export default (hourly: hour[], convertTempTo: (unit: 'c' | 'f', temp: number) =
    * Handle scroll event
    * @param e scroll event
    */
-  const onScroll = (e: ScrollEvent) => {
-    scrollLeft = e.target.scrollLeft
+  const onScroll = (e: UIEvent) => {
+    scrollLeft = e.target ? (<HTMLElement>e.target).scrollLeft : 0
   }
 
   /**

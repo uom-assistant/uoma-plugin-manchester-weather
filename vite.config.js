@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import legacy from '@vitejs/plugin-legacy'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 import Components from 'unplugin-vue-components/vite'
 import Icons from 'unplugin-icons/vite'
@@ -20,6 +21,9 @@ export default defineConfig({
     }),
     Icons(),
     WindiCSS(),
-    vueI18n()
+    vueI18n(),
+    legacy({
+      targets: ['defaults', 'not IE 11']
+    })
   ]
 })
