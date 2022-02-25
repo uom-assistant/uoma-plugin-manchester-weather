@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute inset-0 z-10 w-full h-full" :class="`${(current.weather && inited) ? current.weather.class : 'sunny'}-${currentSpan}`"/>
+  <div class="fixed inset-0 z-10 w-full h-full" :class="`${(current.weather && inited) ? current.weather.class : 'sunny'}-${currentSpan}`"/>
   <main class="absolute inset-0 z-20 box-border overflow-x-hidden overflow-y-auto w-full h-full flex flex-col items-center p-5 no-tap-highlight bottom-safe" :class="`${(current.weather && inited && (current.weather.class === 'cloudy' || current.weather.class === 'sand') && currentSpan === 'noon') ? 'text-gray-900' : 'text-gray-50'}${(loading && !inited) ? ' justify-center' : ' justify-start'}`">
     <div class="h-6px w-200px relative overflow-hidden bg-opacity-30 bg-gray-50 rounded-full" v-if="loading && !inited">
       <div class="animate-loading1 bg-gray-50 absolute h-full top-0 rounded-full"></div>

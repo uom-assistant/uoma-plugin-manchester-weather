@@ -22,7 +22,7 @@ export default (precipitation: precipitation[], currentTime: Ref<Date>): rain =>
   const remainArray = computed(() => remain.value.map((item) => item.precipitation))
 
   // Whether it is raining
-  const isRainning = computed(() => remain.value[0].precipitation > 0)
+  const isRainning = computed(() => remain.value[0] && remain.value[0].precipitation > 0)
 
   // Max precipitation in the future
   const maxPrecipitation = computed(() => Math.max(...remainArray.value))
